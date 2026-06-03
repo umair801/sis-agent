@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.core.logging import setup_logging, logger
 from app.api.v1.router import api_router
+import app.models  # noqa: F401 — registers all models with Base.metadata
 
 
 @asynccontextmanager

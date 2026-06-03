@@ -1,11 +1,28 @@
-﻿from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.orm import DeclarativeBase
+﻿from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from app.core.config import settings
 import re
 
-# Convert postgresql:// to postgresql+asyncpg://
+
+# ---------------------------------------------------------------------------
+# Base
+# ---------------------------------------------------------------------------
+
+class Base(DeclarativeBase):
+    pass
+
+
+# ---------------------------------------------------------------------------
+# URL helper
+# ---------------------------------------------------------------------------
+
 def make_async_url(url: str) -> str:
     return re.sub(r"^postgresql://", "postgresql+asyncpg://", url)
+
+
+# ---------------------------------------------------------------------------
+# Engine
+# ---------------------------------------------------------------------------
 
 engine = create_async_engine(
     make_async_url(settings.DATABASE_URL),
@@ -14,21 +31,20 @@ engine = create_async_engine(
     max_overflow=20,
 )
 
-AsyncSessionLocal = async_sessionmaker(
-    engine,
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
     class_=AsyncSession,
     expire_on_commit=False,
 )
 
-class Base(DeclarativeBase):
-    pass
+
+# ---------------------------------------------------------------------------
+# Dependency
+# ---------------------------------------------------------------------------
 
 async def get_db():
     async with AsyncSessionLocal() as session:
         try:
             yield session
-        except Exception:
-            await session.rollback()
-            raise
         finally:
             await session.close()
