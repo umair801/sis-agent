@@ -22,7 +22,7 @@ from app.core.logging import logger
 
 QUERY_DOMAINS = {
     "attendance": {
-        "tables": ["sis_attendance_record", "sis_student", "sis_school"],
+        "tables": ["sis_attendance_daily", "sis_attendance_period", "sis_student", "sis_school"],
         "description": "attendance records, absences, tardies, present/absent counts",
     },
     "students": {
@@ -42,7 +42,7 @@ QUERY_DOMAINS = {
         "description": "IEP records, special education students, compliance deadlines",
     },
     "budget": {
-        "tables": ["sis_budget_allocation", "sis_budget_category", "sis_expenditure"],
+        "tables": ["sis_budget", "sis_budget_line_item", "sis_budget_transaction", "sis_fiscal_year"],
         "description": "budget allocations, expenditures, resource forecasting",
     },
     "communication": {
@@ -80,6 +80,11 @@ sis_attendance_daily (id, tenant_id, student_id, school_id, attendance_date, sta
 sis_attendance_period (id, tenant_id, student_id, school_id, period_id, attendance_date, status, notes, recorded_by)
   -- status values: 'present', 'absent', 'tardy', 'excused'
 sis_period (id, tenant_id, school_id, name, short_name, start_time, end_time, sort_order, is_active)
+sis_course (id, tenant_id, course_code, name, description, credits, department, is_active)
+sis_section (id, tenant_id, school_id, course_id, academic_year_id, period_id, room_id, teacher_id, section_number, is_active)
+sis_grade (id, tenant_id, student_id, assignment_id, section_id, points_earned, percentage, letter_grade, is_excused, is_missing, graded_at)
+sis_assignment (id, tenant_id, section_id, category_id, name, max_points, due_date, is_published)
+sis_section_final_grade (id, tenant_id, student_id, section_id, academic_year_id, final_percentage, letter_grade, gpa_points, credits_earned, is_passing)
 sis_iep (id, tenant_id, student_id, status, disability_category, start_date, end_date, next_review_date, eligibility_date, created_at)
   -- status values: 'draft', 'active', 'expired', 'revoked'
 sis_iep_goal (id, iep_id, tenant_id, domain, goal_text, status, sequence)

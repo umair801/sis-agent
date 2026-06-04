@@ -81,7 +81,7 @@ REPORT_QUERIES: dict[str, str] = {
     ReportType.GRADE_DISTRIBUTION: """
         SELECT
             c.name AS course_name,
-            c.code AS course_code,
+            c.course_code AS course_code,
             COUNT(g.id) AS total_grades,
             COUNT(*) FILTER (WHERE g.letter_grade IN ('A+','A','A-')) AS count_a,
             COUNT(*) FILTER (WHERE g.letter_grade IN ('B+','B','B-')) AS count_b,
@@ -93,7 +93,7 @@ REPORT_QUERIES: dict[str, str] = {
         JOIN sis_section sec ON sec.id = g.section_id
         JOIN sis_course c    ON c.id = sec.course_id
         WHERE g.tenant_id = :tenant_id
-        GROUP BY c.id, c.name, c.code
+        GROUP BY c.id, c.name, c.course_code
         ORDER BY c.name
     """,
 
