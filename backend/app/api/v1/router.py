@@ -12,6 +12,10 @@ from app.api.v1.routes.budget import router as budget_router
 from app.api.v1.routes.communication import router as communication_router
 from app.api.v1.routes.nl_query import router as nl_query_router
 from app.api.v1.routes.reports import router as reports_router
+from app.api.v1.routes.conflicts import router as conflicts_router
+from app.api.v1.routes.forecasts import router as forecasts_router
+from app.api.v1.routes.compliance import router as compliance_router
+from app.api.v1.routes.district_docs import router as district_docs_router
 
 api_router = APIRouter()
 
@@ -28,3 +32,7 @@ api_router.include_router(budget_router)
 api_router.include_router(communication_router)
 api_router.include_router(nl_query_router)
 api_router.include_router(reports_router)
+api_router.include_router(conflicts_router)
+api_router.include_router(forecasts_router)
+api_router.include_router(compliance_router)
+api_router.include_router(district_docs_router)
