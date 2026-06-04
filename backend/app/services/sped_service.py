@@ -330,8 +330,11 @@ class IEPGoalCRUD:
         goal = IEPGoal(tenant_id=tenant_id, iep_id=iep_id, **payload.model_dump())
         db.add(goal)
         await db.commit()
-        await db.refresh(goal)
-        return goal
+        result = await db.execute(
+            select(IEPGoal).where(IEPGoal.id == goal.id)
+            .options(selectinload(IEPGoal.progress_notes))
+        )
+        return result.scalar_one()
 
     @staticmethod
     async def update_goal(
@@ -352,8 +355,11 @@ class IEPGoalCRUD:
         for field, value in payload.model_dump(exclude_unset=True).items():
             setattr(goal, field, value)
         await db.commit()
-        await db.refresh(goal)
-        return goal
+        result = await db.execute(
+            select(IEPGoal).where(IEPGoal.id == goal.id)
+            .options(selectinload(IEPGoal.progress_notes))
+        )
+        return result.scalar_one()
 
     @staticmethod
     async def add_progress_note(

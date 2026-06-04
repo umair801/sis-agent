@@ -27,6 +27,13 @@ from app.models.gradebook import (                          # noqa: F401
     GradingScale, AssignmentCategory, Assignment,
     Grade, SectionFinalGrade,
 )
+from app.models.budget import (                             # noqa: F401
+    FiscalYear, Budget, BudgetLineItem,
+    BudgetTransaction, BudgetForecast,
+)
+from app.models.communication import (                      # noqa: F401
+    Announcement, Message, NotificationLog, NotificationPreference,
+)
 from app.models.sped import (                               # noqa: F401
     IEP, IEPService, IEPGoal, IEPGoalProgress,
     IEPAccommodation, IEPTeamMember, IEPMeeting,

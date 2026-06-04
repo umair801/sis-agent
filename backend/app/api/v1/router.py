@@ -8,6 +8,10 @@ from app.api.v1.routes.attendance import router as attendance_router
 from app.api.v1.routes.scheduling import router as scheduling_router
 from app.api.v1.routes.gradebook import router as gradebook_router
 from app.api.v1.routes.sped import router as sped_router
+from app.api.v1.routes.budget import router as budget_router
+from app.api.v1.routes.communication import router as communication_router
+from app.api.v1.routes.nl_query import router as nl_query_router
+from app.api.v1.routes.reports import router as reports_router
 
 api_router = APIRouter()
 
@@ -20,3 +24,7 @@ api_router.include_router(attendance_router)
 api_router.include_router(scheduling_router)
 api_router.include_router(gradebook_router)
 api_router.include_router(sped_router)
+api_router.include_router(budget_router)
+api_router.include_router(communication_router)
+api_router.include_router(nl_query_router)
+api_router.include_router(reports_router)

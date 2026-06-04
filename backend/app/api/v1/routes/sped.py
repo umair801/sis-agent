@@ -214,12 +214,13 @@ async def add_goal(
     db: AsyncSession = Depends(get_db),
     current_user: TokenPayload = Depends(require_roles(*SPED_WRITE_ROLES)),
 ):
-    return await IEPGoalCRUD.add_goal(
+    goal = await IEPGoalCRUD.add_goal(
         db,
         tenant_id=UUID(current_user.tenant_id),
         iep_id=iep_id,
         payload=payload,
     )
+    return IEPGoalResponse.model_validate(goal)
 
 
 @router.patch("/goals/{goal_id}", response_model=IEPGoalResponse)
@@ -237,7 +238,7 @@ async def update_goal(
     )
     if not goal:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Goal not found")
-    return goal
+    return IEPGoalResponse.model_validate(goal)
 
 
 @router.delete("/goals/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)

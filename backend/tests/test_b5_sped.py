@@ -39,14 +39,47 @@ def check(label, resp, expected):
     return None
 
 
-def get_first_student(token) -> str:
+def get_or_create_student(token) -> str:
+    # Strategy 1: search by known test student number
+    resp = requests.get(f"{BASE_URL}/students", headers=h(token),
+                        params={"search": "TEST-B5-001", "limit": 1})
+    if resp.status_code == 200 and resp.json().get("items"):
+        student_id = resp.json()["items"][0]["id"]
+        print(f"[INFO] Found existing student => {student_id}")
+        return student_id
+
+    # Strategy 2: get any student
     resp = requests.get(f"{BASE_URL}/students", headers=h(token), params={"limit": 1})
-    if resp.status_code != 200 or not resp.json().get("data"):
-        print("[SKIP] No students found — seed a student first via B1 endpoints")
-        sys.exit(0)
-    student_id = resp.json()["data"][0]["id"]
-    print(f"[INFO] Using student_id: {student_id}")
-    return student_id
+    if resp.status_code == 200 and resp.json().get("items"):
+        student_id = resp.json()["items"][0]["id"]
+        print(f"[INFO] Using existing student => {student_id}")
+        return student_id
+
+    # Strategy 3: create fresh
+    print("[INFO] Creating test student...")
+    school_resp = requests.get(f"{BASE_URL}/students/lookups/schools",       headers=h(token))
+    year_resp   = requests.get(f"{BASE_URL}/students/lookups/academic-years", headers=h(token))
+    grade_resp  = requests.get(f"{BASE_URL}/students/lookups/grade-levels",   headers=h(token))
+
+    payload = {
+        "student_number": "TEST-B5-002",
+        "first_name": "Emma",
+        "last_name": "Rodriguez",
+        "date_of_birth": "2008-03-15",
+        "gender": "female",
+        "school_id": school_resp.json()[0]["id"] if school_resp.status_code == 200 and school_resp.json() else None,
+        "academic_year_id": year_resp.json()[0]["id"] if year_resp.status_code == 200 and year_resp.json() else None,
+        "grade_level_id": grade_resp.json()[0]["id"] if grade_resp.status_code == 200 and grade_resp.json() else None,
+        "enrollment_date": TODAY.strftime(FMT),
+    }
+    create_resp = requests.post(f"{BASE_URL}/students", json=payload, headers=h(token))
+    if create_resp.status_code == 201:
+        student_id = create_resp.json()["id"]
+        print(f"[PASS] Created test student => {student_id}")
+        return student_id
+
+    print(f"[FAIL] Could not get or create student: {create_resp.text[:400]}")
+    sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -55,7 +88,7 @@ if __name__ == "__main__":
     print("=" * 60)
 
     token = login()
-    student_id = get_first_student(token)
+    student_id = get_or_create_student(token)
 
     # ------------------------------------------------------------------
     # 1. Create IEP (with nested service, goal, accommodation, team member)
