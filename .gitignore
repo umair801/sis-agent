@@ -41,7 +41,11 @@ node_modules/
 dist/
 .next/
 
-# Seed/utility scripts with credentials — never commit
+# Seed/utility/secret scripts — never commit
 seed_role_users.py
 seed_users.py
 test_login.py
+railway_backend_env.txt
+railway_frontend_env.txt
+*.env.txt
+*_env.txt
