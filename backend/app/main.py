@@ -30,18 +30,17 @@ app = FastAPI(
 )
 
 ALLOWED_ORIGINS = [
-    settings.FRONTEND_URL,
+    "https://sis.datawebify.com",
+    "https://sis-api.datawebify.com",
     "http://localhost:5173",
     "http://localhost:80",
     "http://localhost",
-    "https://sis.datawebify.com",
-    "https://sis-frontend.up.railway.app",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
-    allow_origin_regex=r"https://.*\.up\.railway\.app",
+    allow_origin_regex=r"https://.*\.up\.railway\.app|https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -53,9 +52,10 @@ app.include_router(api_router, prefix="/api/v1")
 @app.get("/", tags=["System"])
 async def root():
     return {
-        "service": "SIS API",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "health": "/api/v1/health",
+        "service":  "SIS API",
+        "version":  "1.0.0",
+        "docs":     "/docs",
+        "health":   "/api/v1/health",
         "built_by": "Datawebify",
+        "website":  "https://datawebify.com",
     }
