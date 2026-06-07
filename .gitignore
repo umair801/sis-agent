@@ -15,6 +15,7 @@ env/
 .env
 .env.*
 !.env.example
+!frontend/.env
 
 # Database
 *.db
@@ -24,10 +25,12 @@ env/
 .vscode/
 .idea/
 *.swp
+*.swo
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Logs
 *.log
@@ -38,14 +41,26 @@ logs/
 
 # Node (for frontend)
 node_modules/
-dist/
 .next/
+
+# Frontend build output
+frontend/dist/
 
 # Seed/utility/secret scripts — never commit
 seed_role_users.py
 seed_users.py
 test_login.py
+e2e_test.py
 railway_backend_env.txt
 railway_frontend_env.txt
 *.env.txt
 *_env.txt
+
+# SQL seed files with data
+seed_users.sql
+
+# Backend test files
+backend/query_test.py
+backend/test_a8.py
+backend/upload_test.py
+backend/test_policy.txt
