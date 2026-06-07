@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply bg-surface text-text-primary font-sans antialiased;
+    scrollbar-width: thin;
+    scrollbar-color: #e4e7ef transparent;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-surface-border rounded-full; }
+
+  /* Override browser autofill background and text color */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 40px #ffffff inset !important;
+    -webkit-text-fill-color: #111827 !important;
+    caret-color: #111827;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
+@layer utilities {
+  .card {
+    @apply bg-surface-card border border-surface-border rounded-2xl;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  }
+  .card-hover {
+    @apply bg-surface-card border border-surface-border rounded-2xl transition-all duration-200
+           hover:border-primary-200;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  }
+  .card-hover:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  }
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold px-4 py-2.5 rounded-xl
+           transition-all duration-150 active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .btn-ghost {
+    @apply text-text-secondary hover:text-text-primary hover:bg-surface-muted
+           px-3 py-2 rounded-xl transition-all duration-150 cursor-pointer;
+  }
+  .input-field {
+    @apply bg-white border border-surface-border rounded-xl px-3.5 py-2.5
+           text-text-primary placeholder:text-text-muted text-sm
+           focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100
+           transition-all w-full;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm
+           transition-all duration-150 text-sidebar-text hover:bg-white/10;
+  }
+  .sidebar-link-active {
+    @apply sidebar-link bg-primary-600 text-white font-medium;
+  }
+}
