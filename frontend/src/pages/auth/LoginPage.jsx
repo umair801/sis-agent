@@ -10,7 +10,6 @@ export default function LoginPage() {
   const navigate    = useNavigate();
   const location    = useLocation();
 
-  // No default values — let the user type (avoids browser autofill state conflicts)
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
   const [showPw,   setShowPw]   = useState(false);
@@ -22,12 +21,10 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     if (!email.trim() || !password.trim()) {
       setError("Please enter your email and password.");
       return;
     }
-
     setLoading(true);
     try {
       const user = await login(email.trim(), password, "westlake");
@@ -42,18 +39,21 @@ export default function LoginPage() {
           ? detail.map((d) => d.msg).join(", ")
           : "Invalid credentials. Please try again.";
       setError(msg);
-      console.error("Login error:", err.response?.data);
     } finally {
       setLoading(false);
     }
   };
 
-  // Inline styles to override browser autofill color injection
+  // Base input style — no WebkitTextFillColor so placeholder shows correctly
   const inputStyle = {
     color: "#111827",
     backgroundColor: "#ffffff",
-    WebkitTextFillColor: "#111827",
   };
+
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-gray-200 text-sm " +
+    "focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 " +
+    "transition-all";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 flex items-center justify-center p-4">
@@ -76,18 +76,9 @@ export default function LoginPage() {
           </p>
         </div>
         <div className="flex gap-8 text-sm mt-12">
-          <div>
-            <p className="text-2xl font-display font-bold">6</p>
-            <p className="text-primary-300">Role-scoped dashboards</p>
-          </div>
-          <div>
-            <p className="text-2xl font-display font-bold">AI</p>
-            <p className="text-primary-300">Claude-powered insights</p>
-          </div>
-          <div>
-            <p className="text-2xl font-display font-bold">37</p>
-            <p className="text-primary-300">Data modules</p>
-          </div>
+          <div><p className="text-2xl font-display font-bold">6</p><p className="text-primary-300">Role-scoped dashboards</p></div>
+          <div><p className="text-2xl font-display font-bold">AI</p><p className="text-primary-300">Claude-powered insights</p></div>
+          <div><p className="text-2xl font-display font-bold">37</p><p className="text-primary-300">Data modules</p></div>
         </div>
       </div>
 
@@ -127,10 +118,8 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={inputStyle}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm
-                           focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100
-                           transition-all placeholder-gray-400"
-                placeholder="admin@westlake.edu"
+                className={inputClass}
+                placeholder="your.email@school.edu"
                 autoComplete="email"
               />
             </div>
@@ -146,9 +135,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   style={inputStyle}
-                  className="w-full px-4 py-3 pr-11 rounded-xl border border-gray-200 text-sm
-                             focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100
-                             transition-all placeholder-gray-400"
+                  className={inputClass + " pr-11"}
                   placeholder="Enter your password"
                   autoComplete="current-password"
                 />
