@@ -10,10 +10,10 @@ import DistrictAdminDashboard from "./pages/districtadmin/DistrictAdminDashboard
 import TeacherDashboard       from "./pages/teacher/TeacherDashboard";
 import AttendancePage         from "./pages/teacher/AttendancePage";
 import SpEdDashboard          from "./pages/sped/SpEdDashboard";
+import IepTrackerPage         from "./pages/sped/IepTrackerPage";
 import PrincipalDashboard     from "./pages/principal/PrincipalDashboard";
 import ParentPortal           from "./pages/parent/ParentPortal";
 
-// All roles that can access any page for demo purposes
 const ALL_ROLES = ["SuperAdmin", "DistrictAdmin", "Principal", "Teacher", "SpEdCoordinator", "Parent"];
 
 function ComingSoon({ label }) {
@@ -68,7 +68,7 @@ export default function App() {
             <Route path="settings" element={<ComingSoon label="Settings" />} />
           </Route>
 
-          {/* DistrictAdmin — SuperAdmin can also access for demo */}
+          {/* DistrictAdmin */}
           <Route path="/districtadmin" element={
             <ProtectedRoute allowedRoles={["DistrictAdmin", "SuperAdmin"]}>
               <AppLayout />
@@ -83,7 +83,7 @@ export default function App() {
             <Route path="settings" element={<ComingSoon label="Settings" />} />
           </Route>
 
-          {/* Principal — ALL_ROLES for demo */}
+          {/* Principal */}
           <Route path="/principal" element={
             <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
@@ -97,7 +97,7 @@ export default function App() {
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* Teacher — ALL_ROLES for demo */}
+          {/* Teacher */}
           <Route path="/teacher" element={
             <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
@@ -111,20 +111,20 @@ export default function App() {
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* SpEd — ALL_ROLES for demo */}
+          {/* SpEd */}
           <Route path="/sped" element={
             <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
             </ProtectedRoute>
           }>
             <Route index element={<SpEdDashboard />} />
-            <Route path="iep"        element={<ComingSoon label="IEP Tracker (D4)" />} />
-            <Route path="students"   element={<ComingSoon label="SpEd Students (D4)" />} />
-            <Route path="compliance" element={<ComingSoon label="Compliance (D4)" />} />
+            <Route path="iep"        element={<IepTrackerPage />} />
+            <Route path="students"   element={<ComingSoon label="SpEd Students" />} />
+            <Route path="compliance" element={<ComingSoon label="Compliance" />} />
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* Parent — ALL_ROLES for demo */}
+          {/* Parent */}
           <Route path="/parent" element={
             <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
