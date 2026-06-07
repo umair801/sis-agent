@@ -15,7 +15,7 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { @apply bg-surface-border rounded-full; }
 
-  /* Override browser autofill background and text color */
+  /* Fix browser autofill background and text color */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -24,6 +24,13 @@
     -webkit-text-fill-color: #111827 !important;
     caret-color: #111827;
     transition: background-color 9999s ease-in-out 0s;
+  }
+
+  /* Placeholder color for all inputs — light gray, not black */
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af !important;
+    opacity: 1;
   }
 }
 
@@ -52,7 +59,7 @@
   }
   .input-field {
     @apply bg-white border border-surface-border rounded-xl px-3.5 py-2.5
-           text-text-primary placeholder:text-text-muted text-sm
+           text-text-primary text-sm
            focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100
            transition-all w-full;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);

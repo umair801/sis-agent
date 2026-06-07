@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+const API_BASE = import.meta.env.VITE_API_URL || "/api/v1";
 
 const client = axios.create({
   baseURL: API_BASE,
@@ -16,10 +16,19 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (res) => res,
   (err) => {
+    // Only redirect to login if the FAILED request was NOT the login endpoint itself
+    // and the user has no token stored (truly unauthenticated).
+    // Do NOT redirect on 401s from optional dashboard data fetches.
     if (err.response?.status === 401) {
-      localStorage.removeItem("sis_token");
-      localStorage.removeItem("sis_user");
-      window.location.href = "/login";
+      const url = err.config?.url || "";
+      const isLoginRequest = url.includes("/auth/login");
+      const hasToken = !!localStorage.getItem("sis_token");
+
+      // If there's no token at all, kick to login
+      if (!hasToken && !isLoginRequest) {
+        window.location.href = "/login";
+      }
+      // Otherwise just reject the promise — let the component handle it gracefully
     }
     return Promise.reject(err);
   }

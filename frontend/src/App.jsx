@@ -8,9 +8,13 @@ import LoginPage              from "./pages/auth/LoginPage";
 import SuperAdminDashboard    from "./pages/superadmin/SuperAdminDashboard";
 import DistrictAdminDashboard from "./pages/districtadmin/DistrictAdminDashboard";
 import TeacherDashboard       from "./pages/teacher/TeacherDashboard";
+import AttendancePage         from "./pages/teacher/AttendancePage";
 import SpEdDashboard          from "./pages/sped/SpEdDashboard";
 import PrincipalDashboard     from "./pages/principal/PrincipalDashboard";
 import ParentPortal           from "./pages/parent/ParentPortal";
+
+// All roles that can access any page for demo purposes
+const ALL_ROLES = ["SuperAdmin", "DistrictAdmin", "Principal", "Teacher", "SpEdCoordinator", "Parent"];
 
 function ComingSoon({ label }) {
   return (
@@ -58,20 +62,20 @@ export default function App() {
             </ProtectedRoute>
           }>
             <Route index element={<SuperAdminDashboard />} />
-            <Route path="tenants"  element={<ComingSoon label="Tenant Management (D2+)" />} />
-            <Route path="users"    element={<ComingSoon label="User Management (D2+)" />} />
+            <Route path="tenants"  element={<ComingSoon label="Tenant Management" />} />
+            <Route path="users"    element={<ComingSoon label="User Management" />} />
             <Route path="ai"       element={<ComingSoon label="AI Queries (D7)" />} />
             <Route path="settings" element={<ComingSoon label="Settings" />} />
           </Route>
 
-          {/* DistrictAdmin */}
+          {/* DistrictAdmin — SuperAdmin can also access for demo */}
           <Route path="/districtadmin" element={
             <ProtectedRoute allowedRoles={["DistrictAdmin", "SuperAdmin"]}>
               <AppLayout />
             </ProtectedRoute>
           }>
             <Route index element={<DistrictAdminDashboard />} />
-            <Route path="students" element={<ComingSoon label="Students (D2+)" />} />
+            <Route path="students" element={<ComingSoon label="Students" />} />
             <Route path="staff"    element={<ComingSoon label="Staff Management" />} />
             <Route path="budget"   element={<ComingSoon label="Budget Module" />} />
             <Route path="reports"  element={<ComingSoon label="Reports" />} />
@@ -79,9 +83,9 @@ export default function App() {
             <Route path="settings" element={<ComingSoon label="Settings" />} />
           </Route>
 
-          {/* Principal */}
+          {/* Principal — ALL_ROLES for demo */}
           <Route path="/principal" element={
-            <ProtectedRoute allowedRoles={["Principal"]}>
+            <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
             </ProtectedRoute>
           }>
@@ -93,23 +97,23 @@ export default function App() {
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* Teacher */}
+          {/* Teacher — ALL_ROLES for demo */}
           <Route path="/teacher" element={
-            <ProtectedRoute allowedRoles={["Teacher"]}>
+            <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
             </ProtectedRoute>
           }>
-            <Route index element={<TeacherDashboard />} />
-            <Route path="attendance" element={<ComingSoon label="Attendance Entry (D3)" />} />
-            <Route path="gradebook"  element={<ComingSoon label="Gradebook (D3)" />} />
-            <Route path="schedule"   element={<ComingSoon label="My Schedule (D3)" />} />
-            <Route path="messages"   element={<ComingSoon label="Messages (D3)" />} />
+            <Route index           element={<TeacherDashboard />} />
+            <Route path="attendance" element={<AttendancePage />} />
+            <Route path="gradebook"  element={<ComingSoon label="Gradebook (coming next)" />} />
+            <Route path="schedule"   element={<ComingSoon label="My Schedule" />} />
+            <Route path="messages"   element={<ComingSoon label="Messages" />} />
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* SpEd */}
+          {/* SpEd — ALL_ROLES for demo */}
           <Route path="/sped" element={
-            <ProtectedRoute allowedRoles={["SpEdCoordinator"]}>
+            <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
             </ProtectedRoute>
           }>
@@ -120,9 +124,9 @@ export default function App() {
             <Route path="ai"         element={<ComingSoon label="AI Queries (D7)" />} />
           </Route>
 
-          {/* Parent */}
+          {/* Parent — ALL_ROLES for demo */}
           <Route path="/parent" element={
-            <ProtectedRoute allowedRoles={["Parent"]}>
+            <ProtectedRoute allowedRoles={ALL_ROLES}>
               <AppLayout />
             </ProtectedRoute>
           }>
