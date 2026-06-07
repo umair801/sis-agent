@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
@@ -17,17 +17,31 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="SIS API",
-    description="AI-powered Student Information System by Datawebify",
+    title="SIS API — Westlake Unified School District",
+    description=(
+        "AI-powered Student Information System built by Datawebify. "
+        "Multi-tenant SaaS platform with LangGraph orchestration, "
+        "Claude AI integration, and RAG pipeline over district documents."
+    ),
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan,
 )
 
+ALLOWED_ORIGINS = [
+    settings.FRONTEND_URL,
+    "http://localhost:5173",
+    "http://localhost:80",
+    "http://localhost",
+    "https://sis.datawebify.com",
+    "https://sis-frontend.up.railway.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, "http://localhost:5173"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://.*\.up\.railway\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,6 +50,12 @@ app.add_middleware(
 app.include_router(api_router, prefix="/api/v1")
 
 
-@app.get("/health", tags=["System"])
-async def root_health():
-    return {"status": "ok", "service": "SIS API"}
+@app.get("/", tags=["System"])
+async def root():
+    return {
+        "service": "SIS API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/api/v1/health",
+        "built_by": "Datawebify",
+    }
